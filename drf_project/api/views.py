@@ -1,12 +1,12 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from .models import Student
+from .serializers import StudentSerializer
 
 @api_view(['GET'])
 def home(request):
-    data = {
-        "message": "Hello Rahul",
-        "course": "Django REST Framework",
-        "week": 3
-    }
 
-    return Response(data)
+    students = Student.objects.all()
+    serializer = StudentSerializer(students, many=True)
+
+    return Response(serializer.data)
