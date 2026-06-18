@@ -42,3 +42,15 @@ def delete_student(request, pk):
     student.delete()
 
     return Response({"message": "Student deleted successfully"})
+from django.contrib.auth.models import User
+from .user_serializers import RegisterSerializer
+@api_view(['POST'])
+def register(request):
+
+    serializer = RegisterSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message": "User registered successfully"})
+
+    return Response(serializer.errors)
