@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Student
@@ -54,3 +55,15 @@ def register(request):
         return Response({"message": "User registered successfully"})
 
     return Response(serializer.errors)
+@api_view(['POST'])
+def login(request):
+
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    user = authenticate(username=username, password=password)
+
+    if user:
+        return Response({"message": "Login successful"})
+
+    return Response({"message": "Invalid credentials"})
